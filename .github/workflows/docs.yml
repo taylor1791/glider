@@ -1,0 +1,25 @@
+name: Publish Documentation
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    name: Push Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Required to calculate the subtree to push
+          fetch-depth: 0
+
+      - name: Configure git
+        run: git remote add "${DOC_REMOTE_NAME}" "https://${GH_PERSONAL_ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git"
+
+      - name: Push documentation subtree
+        run: git push "${DOC_REMOTE_NAME}" `git subtree split --prefix="${SUBTREE_PREFIX}" "${GITHUB_REF#refs/heads/}"`:master --force
+    env:
+      DOC_REMOTE_NAME: origin-docs
+      SUBTREE_PREFIX: docs
