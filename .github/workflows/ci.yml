@@ -1,0 +1,21 @@
+name: CI Suite
+on:
+  push:
+  # Running on a schedule helps isolate breaking system changes.
+  # E.g. node.
+  schedule:
+    - cron: "58 11 * * *"
+
+jobs:
+  verify_format:
+    name: Verify Code Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install JavaScript Dependencies
+        run: yarn install
+
+      - name: Run prettier
+        run: yarn prettier --check .

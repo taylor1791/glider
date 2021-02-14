@@ -4,5 +4,8 @@
   "description": "An opinionated DevOps approach to software engineering.",
   "repository": "git@github.com:taylor1791/glider.git",
   "author": "Taylor Everding <taylor1791@users.noreply.github.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
 }
