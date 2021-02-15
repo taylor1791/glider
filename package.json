@@ -6,6 +6,7 @@
   "author": "Taylor Everding <taylor1791@users.noreply.github.com>",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^7.20.0",
     "prettier": "^2.2.1"
   }
 }
