@@ -1,0 +1,29 @@
+name: Auto-dependabot
+on: pull_request
+
+jobs:
+  merge_compatible_updates:
+    if: github.actor == 'dependabot[bot]'
+    name: Merge Compatible Upgrades
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check Status and Merge
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{github.token}}
+          script: |
+            const root = process.env.GITHUB_WORKSPACE;
+            const main = require(
+              `${root}/.github/workflows/scripts/merge-compatible-upgrades`
+            );
+            main({
+              pollInterval: 10 * 1000, // Every 10 seconds
+              pollTimeout: 2 * 60 * 1000, // for 2 minutes
+              log: console.log,
+              github,
+              context,
+              env: process.env
+            });

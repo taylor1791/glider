@@ -6,7 +6,7 @@
   "author": "Taylor Everding <taylor1791@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest --collectCoverage --passWithNoTests"
+    "test": "jest --collectCoverage"
   },
   "devDependencies": {
     "eslint": "^7.20.0",
