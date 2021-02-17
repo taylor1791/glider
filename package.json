@@ -5,8 +5,12 @@
   "repository": "git@github.com:taylor1791/glider.git",
   "author": "Taylor Everding <taylor1791@users.noreply.github.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "jest --collectCoverage --passWithNoTests"
+  },
   "devDependencies": {
     "eslint": "^7.20.0",
+    "jest": "^26.6.3",
     "prettier": "^2.2.1"
   }
 }
