@@ -1,8 +1,6 @@
 name: CI Suite
 on:
   push:
-  # Running on a schedule helps isolate breaking system changes.
-  # E.g. node.
   schedule:
     - cron: "58 11 * * *"
 
