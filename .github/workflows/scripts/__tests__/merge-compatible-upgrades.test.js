@@ -69,16 +69,15 @@ describe("mere-compatible-upgrades", () => {
   });
 
   it("bails if current workflow does not have job", async () => {
-    this.mainArgs.github.actions.listJobsForWorkflowRun = createListJobsForWorkflowRun(
-      {
+    this.mainArgs.github.actions.listJobsForWorkflowRun =
+      createListJobsForWorkflowRun({
         jobs: [
           {
             id: Math.floor(Math.random() * 1000),
             run_id: Math.floor(Math.random() * 1000),
           },
         ],
-      }
-    );
+      });
 
     await expect(() => main(this.mainArgs)).rejects.toThrow(
       /Cannot find current job for workflow run id/
