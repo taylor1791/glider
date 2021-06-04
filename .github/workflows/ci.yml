@@ -1,6 +1,8 @@
 name: CI Suite
 on:
   push:
+    branches:
+      - test-autobots
   schedule:
     - cron: "58 11 * * *"
 
