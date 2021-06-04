@@ -1,6 +1,11 @@
 name: Auto-dependabot
 on: pull_request
 
+permissions:
+  actions: read
+  checks: read
+  pull-requests: write
+
 jobs:
   merge_compatible_updates:
     if: github.actor == 'dependabot[bot]'
