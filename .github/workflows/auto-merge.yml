@@ -1,17 +1,25 @@
-name: Auto-dependabot
-on: pull_request
+name: Auto-merge
+
+on:
+  workflow_run:
+    types:
+      - completed
+    workflows:
+      - "CI Suite"
 
 jobs:
-  merge_compatible_updates:
-    if: github.actor == 'dependabot[bot]'
-    name: Merge Compatible Upgrades
+  merge:
+    name: Merge compatible dependency upgrades
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Check Status and Merge
+      - name: Merge Successful Dependabot
         uses: actions/github-script@v4.0.2
+        if: |
+          github.actor == 'dependabot[bot]' &&
+          github.event.workflow_run.conclusion == 'success'
         with:
           github-token: ${{github.token}}
           script: |
@@ -20,10 +28,6 @@ jobs:
               `${root}/.github/workflows/scripts/merge-compatible-upgrades`
             );
             main({
-              pollInterval: 10 * 1000, // Every 10 seconds
-              pollTimeout: 2 * 60 * 1000, // for 2 minutes
-              log: console.log,
               github,
               context,
-              env: process.env
             });
