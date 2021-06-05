@@ -3,6 +3,7 @@
 module.exports = {
   collectCoverageFrom: [".github/workflows/scripts/**/*.js"],
   coverageDirectory: ".coverage",
+  coverageReporters: ["text"],
   coverageThreshold: {
     global: {
       branches: 0,
