@@ -3,7 +3,7 @@ name: Auto-merge
 on:
   workflow_run:
     types: [completed]
-    branches-ignore: [master]
+    branches-ignore: [main]
     workflows: ["CI Suite"]
 
 jobs:

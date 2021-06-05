@@ -2,7 +2,7 @@ name: Publish Documentation
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   publish:
@@ -19,7 +19,7 @@ jobs:
         run: git remote add "${DOC_REMOTE_NAME}" "https://${GH_PERSONAL_ACCESS_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git"
 
       - name: Push documentation subtree
-        run: git push "${DOC_REMOTE_NAME}" `git subtree split --prefix="${SUBTREE_PREFIX}" "${GITHUB_REF#refs/heads/}"`:master --force
+        run: git push "${DOC_REMOTE_NAME}" `git subtree split --prefix="${SUBTREE_PREFIX}" "${GITHUB_REF#refs/heads/}"`:main --force
     env:
       DOC_REMOTE_NAME: origin-docs
       SUBTREE_PREFIX: docs
