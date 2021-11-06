@@ -3,11 +3,24 @@ const main = require("../merge-compatible-upgrades");
 jest.useFakeTimers();
 
 describe("mere-compatible-upgrades", () => {
-  let mainArgs;
+  let mainArgs, workflow_run;
   beforeEach(() => {
+    workflow_run = {
+      pull_requests: [{ number: 1977 }],
+    };
+
+    const getWorkflowRun = jest.fn(() =>
+      Promise.resolve({ data: workflow_run })
+    );
+
     const github = {
-      pulls: {
-        merge: jest.fn(),
+      rest: {
+        actions: {
+          getWorkflowRun,
+        },
+        pulls: {
+          merge: jest.fn(),
+        },
       },
     };
 
@@ -19,10 +32,8 @@ describe("mere-compatible-upgrades", () => {
             login: "earth",
           },
         },
-        workflow_run: {
-          pull_requests: [{ number: 12 }],
-        },
       },
+      runId: 2,
     };
 
     mainArgs = {
@@ -32,14 +43,14 @@ describe("mere-compatible-upgrades", () => {
   });
 
   it("does not attempt to merge non-pull requests", async () => {
-    mainArgs.context.payload.workflow_run.pull_requests = [];
+    workflow_run.pull_requests = [];
 
     await main(mainArgs);
-    expect(mainArgs.github.pulls.merge).not.toHaveBeenCalled();
+    expect(mainArgs.github.rest.pulls.merge).not.toHaveBeenCalled();
   });
 
   it("errors when a single workflow is associated with multiple PRs", async () => {
-    mainArgs.context.payload.workflow_run.pull_requests = [{}, {}];
+    workflow_run.pull_requests = [{}, {}];
 
     await expect(main(mainArgs)).rejects.toThrow();
   });
@@ -47,11 +58,10 @@ describe("mere-compatible-upgrades", () => {
   it("merges pull requests", async () => {
     await main(mainArgs);
 
-    expect(mainArgs.github.pulls.merge).toHaveBeenCalledWith({
+    expect(mainArgs.github.rest.pulls.merge).toHaveBeenCalledWith({
       owner: mainArgs.context.payload.repository.owner.login,
       repo: mainArgs.context.payload.repository.name,
-      pull_number:
-        mainArgs.context.payload.workflow_run.pull_requests[0].number,
+      pull_number: 1977,
       merge_method: "rebase",
     });
   });
