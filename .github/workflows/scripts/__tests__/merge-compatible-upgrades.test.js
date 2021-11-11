@@ -5,6 +5,8 @@ jest.useFakeTimers();
 describe("mere-compatible-upgrades", () => {
   let mainArgs, workflow_run;
   beforeEach(() => {
+    console.log = jest.fn();
+
     workflow_run = {
       pull_requests: [{ number: 1977 }],
     };

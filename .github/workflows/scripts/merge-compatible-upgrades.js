@@ -10,6 +10,7 @@ async function main({ context, github }) {
   ).data;
 
   if (!workflow_run.pull_requests.length) {
+    console.log(`Pull request is missing from workflow_run {run_id}`);
     return;
   }
 
