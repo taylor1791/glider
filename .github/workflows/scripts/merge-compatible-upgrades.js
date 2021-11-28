@@ -5,6 +5,7 @@ async function main({ context, github }) {
   const repo = context.payload.repository.name;
 
   const run_id = context.runId;
+  console.log(context);
   const workflow_run = (
     await github.rest.actions.getWorkflowRun({ owner, repo, run_id })
   ).data;
