@@ -3,12 +3,7 @@ module.exports = main;
 async function main({ context, github }) {
   const owner = context.payload.repository.owner.login;
   const repo = context.payload.repository.name;
-
-  const run_id = context.runId;
-  console.log(context);
-  const workflow_run = (
-    await github.rest.actions.getWorkflowRun({ owner, repo, run_id })
-  ).data;
+  const workflow_run = context.payload.workflow_run;
 
   if (!workflow_run.pull_requests.length) {
     console.log(`Pull request is missing from workflow_run {run_id}`);

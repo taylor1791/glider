@@ -3,23 +3,12 @@ const main = require("../merge-compatible-upgrades");
 jest.useFakeTimers();
 
 describe("mere-compatible-upgrades", () => {
-  let mainArgs, workflow_run;
+  let mainArgs;
   beforeEach(() => {
     console.log = jest.fn();
 
-    workflow_run = {
-      pull_requests: [{ number: 1977 }],
-    };
-
-    const getWorkflowRun = jest.fn(() =>
-      Promise.resolve({ data: workflow_run })
-    );
-
     const github = {
       rest: {
-        actions: {
-          getWorkflowRun,
-        },
         pulls: {
           merge: jest.fn(),
         },
@@ -34,6 +23,9 @@ describe("mere-compatible-upgrades", () => {
             login: "earth",
           },
         },
+        workflow_run: {
+          pull_requests: [{ number: 1977 }],
+        },
       },
       runId: 2,
     };
@@ -45,14 +37,14 @@ describe("mere-compatible-upgrades", () => {
   });
 
   it("does not attempt to merge non-pull requests", async () => {
-    workflow_run.pull_requests = [];
+    mainArgs.context.payload.workflow_run.pull_requests = [];
 
     await main(mainArgs);
     expect(mainArgs.github.rest.pulls.merge).not.toHaveBeenCalled();
   });
 
   it("errors when a single workflow is associated with multiple PRs", async () => {
-    workflow_run.pull_requests = [{}, {}];
+    mainArgs.context.payload.workflow_run.pull_requests = [{}, {}];
 
     await expect(main(mainArgs)).rejects.toThrow();
   });
